@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 
 
 
-  type address={  
+ export type address={  
          _id?:string,
         details:string,
         phone:string,

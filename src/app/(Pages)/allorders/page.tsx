@@ -6,13 +6,13 @@ import React, { useContext, useEffect, useState } from 'react'
 
 export default function AllOrders() { 
 
-const userId=localStorage.getItem('userId')
- console.log(userId); 
+
  const [ordersData,setOrdersData]=useState<OrderI[]>([])
  
   
   async function getUserOrders() {
-       
+       const userId=await localStorage.getItem('userId')
+ console.log(userId); 
      
       const response=await fetch('https://ecommerce.routemisr.com/api/v1/orders/user/'+localStorage.getItem('userId'))  
      

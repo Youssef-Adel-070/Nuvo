@@ -15,11 +15,12 @@ import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useForm } from 'react-hook-form'
-import { CartResponse } from '@/Interface'
+import { CartResponse, ShippingAddress } from '@/Interface'
 import getUserToken from '@/Helper/getUserToken'
 import { CartContext } from '@/Context/CartContext'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import { address } from '@/services/checkoutServices'
 
 
 
@@ -34,13 +35,13 @@ const {setCartData}=useContext(CartContext)
   const postalCodeInput=useRef<HTMLInputElement|null>(null) 
   const router=useRouter()
  
-  async function checkoutSession(shippingAddress) {
+  async function checkoutSession() {
     
-      // const shippingAddress={ 
-      //   details:detailsInput.current?.value,
-      //   phone:phoneInput.current?.value,
-      //   city:cityInput.current?.value
-      // }
+      const shippingAddress={ 
+        details:detailsInput.current?.value,
+        phone:phoneInput.current?.value,
+        city:cityInput.current?.value
+      }
       const response=await fetch(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=http://localhost:3000`,{ 
         method:"POST",
         body:JSON.stringify({shippingAddress}),
@@ -125,8 +126,8 @@ const {setCartData}=useContext(CartContext)
           </FieldGroup>
           <DialogFooter>
             <DialogClose render={<Button variant="outline">Cancel</Button>} />
-            <Button onClick={checkoutSession}>Visa</Button>
-            <Button onClick={CashSession} >Cash</Button>
+            <Button onClick={()=>checkoutSession}>Visa</Button>
+            <Button onClick={()=>CashSession()} >Cash</Button>
           </DialogFooter>      
         </form>
       </DialogContent>
