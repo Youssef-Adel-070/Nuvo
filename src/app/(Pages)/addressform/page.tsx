@@ -31,10 +31,12 @@ import { useRouter } from "next/navigation"
 import { CartResponse } from "@/Interface"
 import Image from "next/image"
 import toast from "react-hot-toast"
+import Loading from "@/app/loading"
 
 type address={ _id?:string ,name:string,details:string,phone:string,city:string}
 export default function AddressForm() {
-  const [savedAddresses,setSavedAddressser] = useState<address[]>([]) 
+  const [savedAddresses,setSavedAddressser] = useState<address[]>([])  
+  const[isLoading,setIsLoading]=useState<boolean>(false)
 
   const [hiddenInput,setHiddenInput]=useState<HTMLButtonElement|string>('hidden')   
   const [selectedAddresss,setSelectedAddresss]=useState<address|undefined>()   
@@ -69,9 +71,17 @@ async function addDataForm(data:address){
 
 
 async function getDataForm(){ 
-
+  
+  setIsLoading(true)
+ try{ 
    const newAddress= await getAddress()   
        setSavedAddressser(newAddress) 
+
+ }catch(error){
+  console.log(error); 
+ }finally{
+  setIsLoading(false)
+ }
 
        
        
@@ -141,9 +151,9 @@ useEffect(()=>{
   return (
     <main className="min-h-screen bg-[#FBF9F6] text-slate-900">
       
-   
-
-      {/* Content */}
+   {isLoading?<Loading/>:
+      
+      // {/* Content */}
       <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-12">
         <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
           {/* LEFT */}
@@ -624,6 +634,7 @@ useEffect(()=>{
           </aside>
         </div>
         </div>
+}
       
     </main>
   )
