@@ -31,14 +31,15 @@ const getCart=useCallback(async ()=>{
        
     setIsLoading(true)
     try { 
-        const response= await fetch(' http://localhost:3000/api/get-cart') 
+        const response= await fetch('/api/get-cart') 
 
     const data:CartResponse=await response.json()   
-   setCartData(data)  
-   if(cartData?.data.cartOwner){ 
+   setCartData(data)   
+   const userId = data?.data?.cartOwner;
+   if(userId){ 
       
-    localStorage.setItem('userId',cartData.data.cartOwner)
-    localStorage.setItem('personId',cartData.data.cartOwner)
+    localStorage.setItem('userId',userId)
+    localStorage.setItem('personId',userId)
    }
    console.log(data,"from cartContext"); 
   
