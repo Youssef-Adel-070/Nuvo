@@ -27,29 +27,35 @@ import { createContext, useCallback, useEffect, useState } from "react";
      const [userId, setUserId] = useState<string>('')
  
 
-const getCart=useCallback(async ()=>{
-       
-    setIsLoading(true)
-    try { 
-        const response= await fetch('/api/get-cart') 
+const getCart = useCallback(async () => {
+  setIsLoading(true);
 
-    const data:CartResponse=await response.json()   
-   setCartData(data)   
-   const userId = data?.data?.cartOwner;
-   if(userId){ 
-      
-    localStorage.setItem('userId',userId)
-    localStorage.setItem('personId',userId)
-   }
-   console.log(data,"from cartContext"); 
-  
+  try {
+    const response = await fetch("/api/get-cart");
+    const data: CartResponse = await response.json();
 
-    } catch (error) {
-        console.log(error); 
-   } finally {
-      setIsLoading(false)
-   }
-},[])
+    if (!response.ok) {
+      throw new Error("Failed to fetch cart");
+    }
+
+    console.log("Cart response:", data);
+
+    setCartData(data);
+
+    const actualUserId = data?.data?.cartOwner;
+
+    if (actualUserId) {
+      localStorage.setItem("userId", actualUserId);
+      localStorage.setItem("personId", actualUserId);
+    } else {
+      console.error("cartOwner is missing from cart response");
+    }
+  } catch (error) {
+    console.error("getCart error:", error);
+  } finally {
+    setIsLoading(false);
+  }
+}, []);
      
    
     

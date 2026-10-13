@@ -9,7 +9,7 @@ export async function GET(){
           const response= await fetch('https://ecommerce.routemisr.com/api/v1/cart',{ 
                  method:"GET",
                 headers:{ 
-                    token:token+'',
+                    token:token + '',
                     
                 }
             }) 
